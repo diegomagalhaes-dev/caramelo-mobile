@@ -1,7 +1,16 @@
-import React from "react";
-import { Dimensions, Text, View, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  Text,
+  View,
+  Image,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import EStyleSheet from "react-native-extended-stylesheet";
+import { useNavigation } from "@react-navigation/native";
+import { Svg, Image as ImageSvg } from "react-native-svg";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -9,9 +18,38 @@ import useLocation from "../Utils/UseLocation";
 
 import mapMarker from "../images/mapMarker.png";
 import dogCaramelo from "../images/dog.jpg";
+import { RectButton } from "react-native-gesture-handler";
+import api from "../services/api";
+
+interface Feeder {
+  id: number;
+  latitude: number;
+  longitude: number;
+  image: {
+    url: string;
+  };
+}
 
 const FeedersMap = () => {
+  const [feeders, setFeeders] = useState<Feeder[]>([]);
+  const navigation = useNavigation();
   const location = useLocation();
+
+  useEffect(() => {
+    api.get("comedouros").then((response) => {
+      setFeeders(response.data);
+    });
+  }, []);
+
+  function handleNavigateToCreateFeeder() {
+    navigation.navigate("SelectMapPosition");
+  }
+
+  function handleLinkingToGoogleMaps(feeder: Feeder) {
+    Linking.openURL(
+      `https://www.google.com/maps/dir/?api=1&destination=${feeder.latitude},${feeder.longitude}`
+    );
+  }
   return (
     <View style={styles.container}>
       {location && (
@@ -25,27 +63,54 @@ const FeedersMap = () => {
             longitudeDelta: 0.008,
           }}
         >
-          <Marker
-            icon={mapMarker}
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            }}
-          >
-            <Callout tooltip={true}>
-              <View style={styles.PopUpContainer}>
-                <Text style={styles.TextPopUp}>Caramelo App</Text>
-                <Image style={styles.ImagePopUp} source={dogCaramelo} />
-              </View>
-            </Callout>
-          </Marker>
+          {feeders.map((feeder) => {
+            return (
+              <Marker
+                key={feeder.id}
+                icon={mapMarker}
+                coordinate={{
+                  latitude: feeder.latitude,
+                  longitude: feeder.longitude,
+                }}
+              >
+                <Callout
+                  onPress={() => handleLinkingToGoogleMaps(feeder)}
+                  tooltip={true}
+                >
+                  <View style={styles.PopUpContainer}>
+                    <Svg
+                      style={styles.PopUpImage}
+                      width={180}
+                      height={120}
+                      viewBox="0 0 180 120"
+                    >
+                      <ImageSvg
+                        width={"100%"}
+                        height={"100%"}
+                        href={{ uri: feeder.image.url }}
+                        preserveAspectRatio="xMinYMin slice"
+                      />
+                    </Svg>
+                    <View style={styles.TextPopUp}>
+                      <Text> Ver rotas</Text>
+                    </View>
+                  </View>
+                </Callout>
+              </Marker>
+            );
+          })}
         </MapView>
       )}
       <View style={styles.createFeeder}>
-        <Text style={styles.textCreateFeeder}>2 comedouros encontrados</Text>
-        <TouchableOpacity style={styles.createFeederButton}>
+        <Text style={styles.textCreateFeeder}>
+          {feeders.length} comedouros encontrados
+        </Text>
+        <RectButton
+          style={styles.createFeederButton}
+          onPress={handleNavigateToCreateFeeder}
+        >
           <Feather name="plus" color="#FFFF" size={20} />
-        </TouchableOpacity>
+        </RectButton>
       </View>
     </View>
   );
@@ -64,23 +129,24 @@ const styles = EStyleSheet.create({
     height: Dimensions.get("window").height,
   },
   PopUpContainer: {
-    width: "12rem",
-    height: "8rem",
-    flexDirection: "column",
+    width: 180,
     backgroundColor: "#D4E4ED",
     alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 20,
+    justifyContent: "space-between",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   TextPopUp: {
     fontSize: 16,
+    padding: 10,
     color: "#023047",
     fontFamily: "MPLUSRounded1c_700Bold",
   },
-  ImagePopUp: {
-    maxWidth: 120,
-    maxHeight: 80,
-    borderRadius: 20,
+  PopUpImage: {
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   createFeeder: {
     width: "90%",

@@ -9,7 +9,7 @@ import {
   MPLUSRounded1c_800ExtraBold,
 } from "@expo-google-fonts/m-plus-rounded-1c";
 
-import FeedersMap from "./src/Screens/FeedersMap";
+import Routes from "./src/routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -23,7 +23,7 @@ export default function App() {
     return null;
   }
 
-  return <FeedersMap />;
+  return <Routes />;
 }
 
 const styles = EStyleSheet.create({});
