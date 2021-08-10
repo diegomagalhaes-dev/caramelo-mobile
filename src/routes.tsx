@@ -11,7 +11,7 @@ import SelectMapPosition from "./Screens/Create Feeder/SelectMapPosition";
 export default function Routes() {
   return (
     <NavigationContainer>
-      <Navigator screenOptions={{ headerShown: false }}>
+      <Navigator screenOptions={{ headerShown: false,   }}>
         <Screen name="FeedersMap" component={FeedersMap} />
         <Screen name="SelectMapPosition" component={SelectMapPosition} />
         <Screen name="FeederData" component={FeederData} />

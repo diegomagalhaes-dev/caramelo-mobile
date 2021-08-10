@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   Text,
@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import EStyleSheet from "react-native-extended-stylesheet";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Svg, Image as ImageSvg } from "react-native-svg";
 
 import { Feather } from "@expo/vector-icons";
@@ -35,14 +35,14 @@ const FeedersMap = () => {
   const navigation = useNavigation();
   const location = useLocation();
 
-  useEffect(() => {
+  useFocusEffect(() => {
     api.get("comedouros").then((response) => {
       setFeeders(response.data);
     });
-  }, []);
+  });
 
   function handleNavigateToCreateFeeder() {
-    navigation.navigate("SelectMapPosition");
+    navigation.navigate("SelectMapPosition" as any);
   }
 
   function handleLinkingToGoogleMaps(feeder: Feeder) {

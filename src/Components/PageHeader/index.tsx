@@ -22,7 +22,7 @@ const PageHeader = ({ title, subtitle, image }: PageHeaderProps) => {
   }
 
   function handleGobackToHomePage() {
-    navigation.navigate("FeedersMap");
+    navigation.navigate("FeedersMap" as never);
   }
   return (
     <View style={styles.container}>

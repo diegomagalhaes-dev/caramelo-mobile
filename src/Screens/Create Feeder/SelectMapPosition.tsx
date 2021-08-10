@@ -34,7 +34,7 @@ const SelectMapPosition = () => {
   }
 
   function handleNextStep() {
-    navigation.navigate("FeederData", { position });
+    navigation.navigate("FeederData" as never, { position } as never);
   }
 
   return (
