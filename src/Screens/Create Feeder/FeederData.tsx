@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, Image } from "react-native";
 import PageHeader from "../../Components/PageHeader";
 import { Feather } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RectButton, TouchableOpacity } from "react-native-gesture-handler";
@@ -68,7 +68,7 @@ const FeederData = () => {
   }
 
   async function handleSelectImagesGallery() {
-    const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== "granted") {
       alert(
@@ -90,8 +90,8 @@ const FeederData = () => {
     setImage(image);
   }
   return (
-    <View>
-      <PageHeader title="Agora, escolha uma imagem para o comedouro!" />
+    <View style={styles.container}>
+      <PageHeader title="Agora, escolha uma imagem para o comedouro!" back />
       {image !== "" ? (
         <View style={styles.uploadedContainer}>
           <Image
@@ -119,13 +119,13 @@ const FeederData = () => {
           style={styles.content}
           onPress={handleSelectImagesCamera}
         >
-          <Feather name="camera" size={22} color="#F8961E" />
+          <Feather name="camera" size={22} color="#ffff" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.content}
           onPress={handleSelectImagesGallery}
         >
-          <Feather name="file" size={22} color="#F8961E" />
+          <FontAwesome5 name="images" size={22} color="#ffff" />
         </TouchableOpacity>
       </View>
       <RectButton style={styles.nextButton} onPress={handleCreateFeeder}>
@@ -140,11 +140,10 @@ export default FeederData;
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#EBF2F5'
   },
   content: {
-    backgroundColor: "#77A7C2",
+    backgroundColor: "#219EBC",
     borderRadius: 20,
     paddingHorizontal: "4rem",
     paddingVertical: "1rem",
@@ -159,7 +158,7 @@ const styles = EStyleSheet.create({
   },
 
   nextButton: {
-    backgroundColor: "#15c3d6",
+    backgroundColor: "#219EBC",
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
