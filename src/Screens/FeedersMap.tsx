@@ -20,6 +20,7 @@ import mapMarker from "../images/mapMarker.png";
 import dogCaramelo from "../images/dog.jpg";
 import { RectButton } from "react-native-gesture-handler";
 import api from "../services/api";
+import SvgComponent from "../Components/Loading";
 
 interface Feeder {
   id: number;
@@ -52,66 +53,63 @@ const FeedersMap = () => {
   }
   return (
     <View style={styles.container}>
-      {location && (
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          initialRegion={{
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude,
-            latitudeDelta: 0.008,
-            longitudeDelta: 0.008,
-          }}
-        >
-          {feeders.map((feeder) => {
-            return (
-              <Marker
-                key={feeder.id}
-                icon={mapMarker}
-                coordinate={{
-                  latitude: feeder.latitude,
-                  longitude: feeder.longitude,
-                }}
-              >
-                <Callout
-                  onPress={() => handleLinkingToGoogleMaps(feeder)}
-                  tooltip={true}
+      {location ? (
+        <>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={{
+              longitude: location.coords.longitude,
+              latitude: location.coords.latitude,
+              latitudeDelta: 0.008,
+              longitudeDelta: 0.008,
+            }}
+          >
+            {feeders.map((feeder) => {
+              return (
+                <Marker
+                  key={feeder.id}
+                  icon={mapMarker}
+                  coordinate={{
+                    latitude: feeder.latitude,
+                    longitude: feeder.longitude,
+                  }}
                 >
-                  <View style={styles.PopUpContainer}>
-                    <Svg
-                      style={styles.PopUpImage}
-                      width={180}
-                      height={120}
-                      viewBox="0 0 180 120"
-                    >
-                      <ImageSvg
-                        width={"100%"}
-                        height={"100%"}
-                        href={{ uri: feeder.image.url }}
-                        preserveAspectRatio="xMinYMin slice"
-                      />
-                    </Svg>
-                    <View style={styles.TextPopUp}>
-                      <Text> Ver rotas</Text>
+                  <Callout
+                    onPress={() => handleLinkingToGoogleMaps(feeder)}
+                    tooltip={true}
+                  >
+                    <View style={styles.PopUpContainer}>
+                      <Svg width={180} height={120} viewBox="0 0 180 120">
+                        <ImageSvg
+                          width={"100%"}
+                          height={"100%"}
+                          href={{ uri: feeder.image.url }}
+                          preserveAspectRatio="xMinYMin slice"
+                        />
+                      </Svg>
+                      <Text style={styles.TextPopUp}> Ver rotas</Text>
                     </View>
-                  </View>
-                </Callout>
-              </Marker>
-            );
-          })}
-        </MapView>
+                  </Callout>
+                </Marker>
+              );
+            })}
+          </MapView>
+          <View style={styles.createFeeder}>
+            <Text style={styles.textCreateFeeder}>
+              {feeders.length} comedouros encontrados
+            </Text>
+            <RectButton
+              style={styles.createFeederButton}
+              onPress={handleNavigateToCreateFeeder}
+            >
+              <Feather name="plus" color="#FFFF" size={20} />
+            </RectButton>
+          </View>
+        </>
+      ) : (
+        <SvgComponent />
       )}
-      <View style={styles.createFeeder}>
-        <Text style={styles.textCreateFeeder}>
-          {feeders.length} comedouros encontrados
-        </Text>
-        <RectButton
-          style={styles.createFeederButton}
-          onPress={handleNavigateToCreateFeeder}
-        >
-          <Feather name="plus" color="#FFFF" size={20} />
-        </RectButton>
-      </View>
     </View>
   );
 };
@@ -133,20 +131,14 @@ const styles = EStyleSheet.create({
     backgroundColor: "#D4E4ED",
     alignItems: "center",
     justifyContent: "space-between",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
   TextPopUp: {
-    fontSize: 16,
+    fontSize: 18,
     padding: 10,
-    color: "#023047",
-    fontFamily: "MPLUSRounded1c_700Bold",
-  },
-  PopUpImage: {
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    color: "#219EBC",
+    fontFamily: "MPLUSRounded1c_800ExtraBold",
   },
   createFeeder: {
     width: "90%",
@@ -162,13 +154,13 @@ const styles = EStyleSheet.create({
     elevation: 3,
   },
   textCreateFeeder: {
-    color: "#023047",
-    fontFamily: "MPLUSRounded1c_700Bold",
+    color: "#8FA7B2",
+    fontFamily: "MPLUSRounded1c_800ExtraBold",
   },
   createFeederButton: {
     width: "3rem",
     height: "3rem",
-    backgroundColor: "#023047",
+    backgroundColor: "#219EBC",
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
