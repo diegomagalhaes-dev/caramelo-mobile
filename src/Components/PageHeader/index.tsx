@@ -12,9 +12,10 @@ interface PageHeaderProps {
   title: string;
   subtitle?: string;
   image?: ImageSourcePropType;
+  back?: boolean;
 }
 
-const PageHeader = ({ title, subtitle, image }: PageHeaderProps) => {
+const PageHeader = ({ title, subtitle, image, back }: PageHeaderProps) => {
   const navigation = useNavigation();
 
   function handleGoback() {
@@ -30,9 +31,11 @@ const PageHeader = ({ title, subtitle, image }: PageHeaderProps) => {
         <BorderlessButton onPress={handleGoback}>
           <Image source={backIcon} resizeMode="contain" />
         </BorderlessButton>
-        <BorderlessButton onPress={handleGobackToHomePage}>
-          <Feather name="x" size={22} color="#F56160" resizeMode="contain" />
-        </BorderlessButton>
+        {back && (
+          <BorderlessButton onPress={handleGobackToHomePage}>
+            <Feather name="x" size={22} color="#F25050" resizeMode="contain" />
+          </BorderlessButton>
+        )}
       </View>
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
@@ -46,30 +49,32 @@ export default PageHeader;
 
 const styles = EStyleSheet.create({
   container: {
-    paddingVertical: "1.2rem",
-    paddingHorizontal: "1.5rem",
+    paddingVertical: "1.5rem",
     backgroundColor: "#77A7C2",
+    alignItems: "center",
   },
   topBar: {
     flexDirection: "row",
+    width: "92%",
     alignItems: "center",
     justifyContent: "space-between",
   },
   title: {
     fontFamily: "MPLUSRounded1c_700Bold",
     color: "#ffff",
-    fontSize: "1.4rem",
-    lineHeight: "1.5rem",
+    fontSize: "1.3rem",
+    lineHeight: "1.8rem",
   },
   subtitle: {
     marginTop: ".2rem",
     fontSize: ".9rem",
     fontFamily: "MPLUSRounded1c_500Medium",
-    color: "rgba(255, 255, 255,0.6)",
+    color: "#FFFFFF",
+    opacity: 0.8,
   },
   content: {
     marginTop: ".8rem",
-    maxWidth: "95%",
+    width: "90%",
     alignItems: "flex-start",
     justifyContent: "flex-start",
   },
