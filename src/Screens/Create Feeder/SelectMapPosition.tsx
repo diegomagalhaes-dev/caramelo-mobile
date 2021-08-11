@@ -10,6 +10,7 @@ import { Feather } from "@expo/vector-icons";
 import bone from "../../images/bone.png";
 import mapMarkerImg from "../../images/mapMarker.png";
 import useLocation from "../../Utils/UseLocation";
+import SvgComponent from "../../Components/Loading";
 
 const SelectMapPosition = () => {
   const navigation = useNavigation();
@@ -39,35 +40,40 @@ const SelectMapPosition = () => {
 
   return (
     <View style={styles.container}>
-      <PageHeader
-        title="Fico feliz por sua boa ação!"
-        subtitle="No mapa você escolhe um lugar para o comedouro."
-      />
-      {location && (
-        <MapView
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.008,
-            longitudeDelta: 0.008,
-          }}
-          onPress={handleSelectedPosition}
-          style={styles.mapStyle}
-        >
-          <Marker
-            icon={mapMarkerImg}
-            coordinate={{
-              latitude: position.latitude,
-              longitude: position.longitude,
-            }}
+      {location ? (
+        <>
+          <PageHeader
+            title="Fico feliz por sua boa ação!"
+            subtitle="No mapa você escolhe um lugar para o comedouro."
           />
-        </MapView>
+          <MapView
+            initialRegion={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.008,
+              longitudeDelta: 0.008,
+            }}
+            onPress={handleSelectedPosition}
+            style={styles.mapStyle}
+          >
+            <Marker
+              icon={mapMarkerImg}
+              coordinate={{
+                latitude: position.latitude,
+                longitude: position.longitude,
+              }}
+            />
+          </MapView>
+
+          <RectButton style={styles.nextButton} onPress={handleNextStep}>
+            <Text style={styles.nextButtonText}>
+              <Feather name="arrow-right" size={28} color="#fff" />
+            </Text>
+          </RectButton>
+        </>
+      ) : (
+        <SvgComponent />
       )}
-      <RectButton style={styles.nextButton} onPress={handleNextStep}>
-        <Text style={styles.nextButtonText}>
-          <Feather name="arrow-right" size={28} color="#fff" />
-        </Text>
-      </RectButton>
     </View>
   );
 };
@@ -84,12 +90,12 @@ const styles = EStyleSheet.create({
   },
 
   nextButton: {
-    backgroundColor: "#023047",
-    borderRadius: 14,
+    backgroundColor: "#219EBC",
+    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    height: 48,
-    padding: 14,
+    height: 42,
+    padding: 12,
 
     position: "absolute",
     right: 20,
