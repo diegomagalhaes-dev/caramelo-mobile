@@ -5,7 +5,7 @@ import PageHeader from "../../Components/PageHeader";
 import { useNavigation } from "@react-navigation/native";
 import { RectButton } from "react-native-gesture-handler";
 import MapView, { Marker, MapEvent } from "react-native-maps";
-import { Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 import bone from "../../images/bone.png";
 import mapMarkerImg from "../../images/mapMarker.png";
@@ -66,9 +66,7 @@ const SelectMapPosition = () => {
           </MapView>
 
           <RectButton style={styles.nextButton} onPress={handleNextStep}>
-            <Text style={styles.nextButtonText}>
-              <Feather name="arrow-right" size={28} color="#fff" />
-            </Text>
+            <FontAwesome name="angle-right" size={28} color="#fff" />
           </RectButton>
         </>
       ) : (
@@ -90,22 +88,16 @@ const styles = EStyleSheet.create({
   },
 
   nextButton: {
+    width: "3rem",
+    height: "3rem",
     backgroundColor: "#219EBC",
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    height: 42,
-    padding: 12,
 
     position: "absolute",
     right: 20,
     bottom: 20,
-  },
-
-  nextButtonText: {
-    fontFamily: "MPLUSRounded1c_700Bold",
-    fontSize: 16,
-    color: "#FFF",
   },
 });
 
