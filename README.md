@@ -57,6 +57,6 @@ $ expo start
 
 <h2 id="license"> :memo: Licença</h2>
 
-Esse projeto está sob  a Licença MIT. Acesse [LICENSE](https://github.com/diegomagalhaes-dev/caramelo_webApp/blob/master/LICENSE) para mais informações.
+Esse projeto está sob  a Licença MIT. Acesse [LICENSE](https://github.com/diegomagalhaes-dev/caramelo-mobile/blob/master/LICENSE) para mais informações.
 <hr>
 Feito com ♥ por Diêgo Magalhães :wave: <br><a href="https://www.linkedin.com/in/magalhaesdiego/">Fale comigo! 😄</a>
